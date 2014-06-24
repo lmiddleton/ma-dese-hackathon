@@ -4,23 +4,23 @@
 
 import json
 
-f = open('ap_performance_state_district_school_2007_2013.tsv', 'r')
+f = open('IDCrosswalkMasterList_ncesdata_C22D9CAE-google.tsv', 'r')
 
 arr = []
 headers = []
 
-for header in f.readline().split('	'):
+for header in f.readline().split('\t'):
 	headers.append(header)
 
 for line in f.readlines():
 	lineItems = {}
-	for i,item in enumerate(line.split('	')):
+	for i,item in enumerate(line.split('\t')):
 		lineItems[headers[i]] = item
 	arr.append(lineItems)
 
 f.close()
 
-with open('data.txt', 'w') as outfile:
+with open('IDCrosswalkMasterList_ncesdata_C22D9CAE-google.txt', 'w') as outfile:
 	json.dump(arr, outfile)
 
 #jsonText = json.dumps(arr)
