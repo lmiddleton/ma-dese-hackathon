@@ -13,10 +13,10 @@ $( document ).ready(function() {
   var masterObj = jQuery.parseJSON(MASTER);
   console.log(masterObj);
 
-  //$.each(masterObj.objects.ma.geometries, function(key, value) {
+  $.each(masterObj, function(key, value) {
     // print the district names
-    //console.log(value.properties.DISTNAME);
-  //});
+    console.log(value['School Name']);
+  });
 
   generateMap(districtsObj);
 
