@@ -2,12 +2,21 @@ $( document ).ready(function() {
 
   // parse districts json
   var districtsObj = jQuery.parseJSON(DISTRICTS);
-  console.log(districtsObj);
+  //console.log(districtsObj);
 
   $.each(districtsObj.objects.ma.geometries, function(key, value) {
     // print the district names
-    console.log(value.properties.DISTNAME);
+    //console.log(value.properties.DISTNAME);
   });
+
+  // parse master data json
+  var masterObj = jQuery.parseJSON(MASTER);
+  console.log(masterObj);
+
+  //$.each(masterObj.objects.ma.geometries, function(key, value) {
+    // print the district names
+    //console.log(value.properties.DISTNAME);
+  //});
 
   generateMap(districtsObj);
 
