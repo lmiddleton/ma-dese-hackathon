@@ -16,6 +16,7 @@ $( document ).ready(function() {
   $.each(masterObj, function(key, value) {
     // print the district names
     console.log(value['School Name']);
+    console.log(value['State District ID']);
   });
 
   generateMap(districtsObj);
