@@ -157,13 +157,16 @@ function generateMap(districtsObj) {
         .attr("id", function(d,i) { return d.id; })
         //.style("fill", function(d,i) { return color(i) });
         .style("stroke", 'black')
+        .style("stroke-width", 0.2)
         .style("fill", "pink");
 
     //tooltips
     
     school
       .on("mouseover", function(d,i) {
-        d3.select(this).style("fill", "red");
+        d3.select(this)
+          .style("stroke", "red")
+          .style("stroke-width", 1);
       })
       .on("mousemove", function(d,i) {
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
@@ -173,7 +176,10 @@ function generateMap(districtsObj) {
             .html(d.id);
         })
         .on("mouseout",  function(d,i) {
-          tooltip.classed("hidden", true)
+          tooltip.classed("hidden", true);
+          d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 0.2);
         });
 
   });
