@@ -59,10 +59,10 @@ function generateMap(districtsObj) {
 
    var topo = topojson.feature(ma, ma.objects['ma-districts-elem-all.geo']).features;
 
-   var district = svg.selectAll(".land").data(topo);
+   var district = svg.selectAll(".dist-elem").data(topo);
 
     district.enter().insert("path")
-        .attr("class", "land")
+        .attr("class", "dist-elem")
         .attr("d", path)
         .attr("id", function(d,i) { return d.id; })
         //.style("fill", function(d,i) { return color(i) });
@@ -89,10 +89,10 @@ function generateMap(districtsObj) {
 
    var topo = topojson.feature(ma, ma.objects['ma-districts-mid-all.geo']).features;
 
-   var district = svg.selectAll(".land").data(topo);
+   var district = svg.selectAll(".dist-mid").data(topo);
 
     district.enter().insert("path")
-        .attr("class", "land")
+        .attr("class", "dist-mid")
         .attr("d", path)
         .attr("id", function(d,i) { return d.id; })
         //.style("fill", function(d,i) { return color(i) });
@@ -119,10 +119,10 @@ function generateMap(districtsObj) {
 
    var topo = topojson.feature(ma, ma.objects['ma-districts-high-all.geo']).features;
 
-   var district = svg.selectAll(".land").data(topo);
+   var district = svg.selectAll(".dist-high").data(topo);
 
     district.enter().insert("path")
-        .attr("class", "land")
+        .attr("class", "dist-high")
         .attr("d", path)
         .attr("id", function(d,i) { return d.id; })
         //.style("fill", function(d,i) { return color(i) });
@@ -149,10 +149,10 @@ function generateMap(districtsObj) {
 
    var topo = topojson.feature(ma, ma.objects['ma-schools-all.geo']).features;
 
-   var school = svg.selectAll(".land").data(topo);
+   var school = svg.selectAll(".school").data(topo);
 
     school.enter().insert("path")
-        .attr("class", "land")
+        .attr("class", "school")
         .attr("d", path)
         .attr("id", function(d,i) { return d.id; })
         //.style("fill", function(d,i) { return color(i) });
@@ -162,12 +162,15 @@ function generateMap(districtsObj) {
     //tooltips
     
     school
+      .on("mouseover", function(d,i) {
+        d3.select(this).style("fill", "red");
+      })
       .on("mousemove", function(d,i) {
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
           tooltip
             .classed("hidden", false)
             .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
-            .html(d.id)
+            .html(d.id);
         })
         .on("mouseout",  function(d,i) {
           tooltip.classed("hidden", true)
