@@ -1,4 +1,11 @@
-$( document ).ready(function() {
+var SCHOOLS_JSON;
+
+$(document).ready(function() {
+	
+	// stuff schools json
+	$.getJSON("js/topojson/ma-schools-all.topo.json", function(json) {
+  		SCHOOLS_JSON = json;
+  	});
 
   // parse districts json
   var districtsObj = jQuery.parseJSON(DISTRICTS);
@@ -11,12 +18,12 @@ $( document ).ready(function() {
 
   // parse master data json
   var masterObj = jQuery.parseJSON(MASTER);
-  console.log(masterObj);
+  //console.log(masterObj);
 
   $.each(masterObj, function(key, value) {
     // print the district names
-    console.log(value['School Name']);
-    console.log(value['State District ID']);
+    //console.log(value['School Name']);
+    //console.log(value['State District ID']);
   });
 
   generateMap(districtsObj);
@@ -170,7 +177,8 @@ function generateMap(districtsObj) {
       })
       .on("click", function(d,i) {
         console.log("you clicked a school");
-        d3.event.stopPropagation();
+        var schid = getSCHID(d.id);
+        console.log(schid);
       })
       .on("mousemove", function(d,i) {
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
@@ -194,4 +202,24 @@ function generateMap(districtsObj) {
 
 function getDistCode8(districtsObj, distName) {
   return "lauren";
+}
+
+/* given the NAME of a school, returns the SCHID */
+function getSCHID(name) {
+	//console.log(name);
+	console.log(SCHOOLS_JSON);
+	var schid;
+  		$.each(SCHOOLS_JSON.objects['ma-schools-all.geo'].geometries, function (key, value) {
+  			//console.log(value.properties.NAME);
+  			//console.log(value.properties.SCHID);
+  			if (value.properties.NAME === name) {
+  				//console.log('match');
+  				//console.log(value.properties.SCHID)
+  				console.log('name:' + name);
+  				schid = value.properties.SCHID;
+  				return;
+  			}
+  		});
+  		return schid;
+
 }
