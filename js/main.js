@@ -168,6 +168,10 @@ function generateMap(districtsObj) {
           .style("stroke", "red")
           .style("stroke-width", 1);
       })
+      .on("click", function(d,i) {
+        console.log("you clicked a school");
+        d3.event.stopPropagation();
+      })
       .on("mousemove", function(d,i) {
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
           tooltip
