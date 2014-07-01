@@ -1,10 +1,17 @@
 var SCHOOLS_JSON;
+var MCAS_JSON;
 
 $(document).ready(function() {
 	
 	// stuff schools json
 	$.getJSON("js/topojson/ma-schools-all.topo.json", function(json) {
   		SCHOOLS_JSON = json;
+  	});
+  	
+  	// stuff MCAS json
+  	$.getJSON("data/core/mcas/2007performance_school.json", function(json) {
+  		console.log(json);
+  		MCAS_JSON = json;
   	});
 
   // parse districts json
@@ -27,8 +34,16 @@ $(document).ready(function() {
   });
 
   generateMap(districtsObj);
+  
+  initDistGrHandler();
 
 });
+
+function initDistGrHandler() {
+	$('#dist-gr').on('change', function() {
+		console.log('you changed it');
+	});
+}
 
 function generateMap(districtsObj) {
   // script modified from http://techslides.com/mapping-town-boundaries-with-d3/
@@ -53,6 +68,7 @@ function generateMap(districtsObj) {
   var svg = d3.select("body").append("svg")
       .attr("width", width)
       .attr("height", height)
+      .attr("class", 'map-container')
       .call(d3.behavior.zoom()
       .on("zoom", redraw))
       .append("g")
@@ -177,7 +193,9 @@ function generateMap(districtsObj) {
       })
       .on("click", function(d,i) {
         console.log("you clicked a school");
-        var schid = getSCHID(d.id);
+        var schname = d.id;
+        var schid = nameToSchid(schname);
+        var mcas = schidToMcas(schid, '1997')
         console.log(schid);
       })
       .on("mousemove", function(d,i) {
@@ -205,21 +223,20 @@ function getDistCode8(districtsObj, distName) {
 }
 
 /* given the NAME of a school, returns the SCHID */
-function getSCHID(name) {
-	//console.log(name);
-	console.log(SCHOOLS_JSON);
+function nameToSchid(name) {
 	var schid;
-  		$.each(SCHOOLS_JSON.objects['ma-schools-all.geo'].geometries, function (key, value) {
-  			//console.log(value.properties.NAME);
-  			//console.log(value.properties.SCHID);
-  			if (value.properties.NAME === name) {
-  				//console.log('match');
-  				//console.log(value.properties.SCHID)
-  				console.log('name:' + name);
-  				schid = value.properties.SCHID;
-  				return;
-  			}
-  		});
-  		return schid;
+  	$.each(SCHOOLS_JSON.objects['ma-schools-all.geo'].geometries, function (key, value) {
+  		if (value.properties.NAME === name) {
+  			schid = value.properties.SCHID;
+  			return;
+  		}
+  	});
+  	return schid;
+}
 
+/* given a school's SCHID (ORG CODE) and year, returns the school's MCAS data for that year */
+function schidToMcas(schid, year) {
+	$.each(MCAS_JSON, function (key, value) {
+		console.log(value);
+	});
 }
