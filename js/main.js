@@ -34,7 +34,7 @@ $(document).ready(function() {
   });
 
   generateElemMap();
-  generateSchoolMap();
+  //generateSchoolMap();
   
   initDistGrHandler();
 
@@ -46,17 +46,17 @@ function initDistGrHandler() {
 			case 'elem':
 				$('svg').remove();
 				generateElemMap();
-				generateSchoolMap();
+				//generateSchoolMap();
 				break;
 			case 'mid':
 				$('svg').remove();
 				generateMidMap();
-				generateSchoolMap();
+				//generateSchoolMap();
 				break;
 			case 'high':
 				$('svg').remove();
 				generateHighMap();
-				generateSchoolMap();
+				//generateSchoolMap();
 				break;
 		}
 	});
@@ -122,6 +122,64 @@ function generateElemMap() {
           tooltip.classed("hidden", true)
         });
   });
+  
+  // school map (PK-High School)
+  // generated from shapefiles: http://www.mass.gov/anf/research-and-tech/it-serv-and-support/application-serv/office-of-geographic-information-massgis/datalayers/schools.html
+  d3.json("js/topojson/ma-schools-all.topo.json", function(error, ma) {
+
+   var topo = topojson.feature(ma, ma.objects['ma-schools-all.geo']).features;
+   
+   /*
+   $.each(topo, function(key, value) {
+    console.log(value.properties.GRADES);
+  });
+  */
+
+   var school = svg.selectAll(".school").data(topo);
+   
+   //console.log(school);
+
+    school.enter().insert("path")
+        .attr("class", "school")
+        .attr("d", path)
+        .attr("id", function(d,i) { return d.id; })
+        //.style("fill", function(d,i) { return color(i) });
+        .style("stroke", 'black')
+        .style("stroke-width", 0.2)
+        .style("fill", "pink");
+
+    //tooltips
+    
+    school
+      .on("mouseover", function(d,i) {
+        d3.select(this)
+          .style("stroke", "red")
+          .style("stroke-width", 1);
+      })
+      .on("click", function(d,i) {
+        console.log("you clicked a school");
+        var schname = d.id;
+        var schid = nameToSchid(schname);
+        var mcas = schidToMcas(schid, '1997')
+        console.log(schid);
+      })
+      .on("mousemove", function(d,i) {
+        var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+          tooltip
+            .classed("hidden", false)
+            .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
+            .html(d.id);
+        })
+        .on("mouseout",  function(d,i) {
+          tooltip.classed("hidden", true);
+          d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 0.2);
+        });
+
+  });
+
+  d3.select(self.frameElement).style("height", height + "px");
 }
 
 function generateMidMap() {
@@ -184,6 +242,56 @@ function generateMidMap() {
           tooltip.classed("hidden", true)
         });
   });
+  
+  // school map (PK-High School)
+  // generated from shapefiles: http://www.mass.gov/anf/research-and-tech/it-serv-and-support/application-serv/office-of-geographic-information-massgis/datalayers/schools.html
+  d3.json("js/topojson/ma-schools-all.topo.json", function(error, ma) {
+
+   var topo = topojson.feature(ma, ma.objects['ma-schools-all.geo']).features;
+
+   var school = svg.selectAll(".school").data(topo);
+
+    school.enter().insert("path")
+        .attr("class", "school")
+        .attr("d", path)
+        .attr("id", function(d,i) { return d.id; })
+        //.style("fill", function(d,i) { return color(i) });
+        .style("stroke", 'black')
+        .style("stroke-width", 0.2)
+        .style("fill", "pink");
+
+    //tooltips
+    
+    school
+      .on("mouseover", function(d,i) {
+        d3.select(this)
+          .style("stroke", "red")
+          .style("stroke-width", 1);
+      })
+      .on("click", function(d,i) {
+        console.log("you clicked a school");
+        var schname = d.id;
+        var schid = nameToSchid(schname);
+        var mcas = schidToMcas(schid, '1997')
+        console.log(schid);
+      })
+      .on("mousemove", function(d,i) {
+        var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+          tooltip
+            .classed("hidden", false)
+            .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
+            .html(d.id);
+        })
+        .on("mouseout",  function(d,i) {
+          tooltip.classed("hidden", true);
+          d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 0.2);
+        });
+
+  });
+
+  d3.select(self.frameElement).style("height", height + "px");
 }
 
 function generateHighMap() {
@@ -247,6 +355,56 @@ function generateHighMap() {
           tooltip.classed("hidden", true)
         });
   });
+  
+  // school map (PK-High School)
+  // generated from shapefiles: http://www.mass.gov/anf/research-and-tech/it-serv-and-support/application-serv/office-of-geographic-information-massgis/datalayers/schools.html
+  d3.json("js/topojson/ma-schools-all.topo.json", function(error, ma) {
+
+   var topo = topojson.feature(ma, ma.objects['ma-schools-all.geo']).features;
+
+   var school = svg.selectAll(".school").data(topo);
+
+    school.enter().insert("path")
+        .attr("class", "school")
+        .attr("d", path)
+        .attr("id", function(d,i) { return d.id; })
+        //.style("fill", function(d,i) { return color(i) });
+        .style("stroke", 'black')
+        .style("stroke-width", 0.2)
+        .style("fill", "pink");
+
+    //tooltips
+    
+    school
+      .on("mouseover", function(d,i) {
+        d3.select(this)
+          .style("stroke", "red")
+          .style("stroke-width", 1);
+      })
+      .on("click", function(d,i) {
+        console.log("you clicked a school");
+        var schname = d.id;
+        var schid = nameToSchid(schname);
+        var mcas = schidToMcas(schid, '1997')
+        console.log(schid);
+      })
+      .on("mousemove", function(d,i) {
+        var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+          tooltip
+            .classed("hidden", false)
+            .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1])+"px")
+            .html(d.id);
+        })
+        .on("mouseout",  function(d,i) {
+          tooltip.classed("hidden", true);
+          d3.select(this)
+            .style("stroke", "black")
+            .style("stroke-width", 0.2);
+        });
+
+  });
+
+  d3.select(self.frameElement).style("height", height + "px");
 }
 
 function generateSchoolMap() {
@@ -523,7 +681,13 @@ function nameToSchid(name) {
 
 /* given a school's SCHID (ORG CODE) and year, returns the school's MCAS data for that year */
 function schidToMcas(schid, year) {
+	var sniper;
 	$.each(MCAS_JSON, function (key, value) {
-		console.log(value);
+		if (value['org_code'] === schid) {
+			sniper = value.sni_per;
+			return;
+		}
 	});
+	console.log('sniper: ' + sniper);
+	return sniper;
 }
